@@ -19,9 +19,6 @@
     "Express.js",
     "PostgreSQL"
   ],
-  "contributors": [
-    "Denny Wahyu Prasetyo"
-  ],
   "author": "Denny Wahyu Prasetyo",
   "license": "ISC",
   "dependencies": {
