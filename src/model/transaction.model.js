@@ -1,14 +1,30 @@
 const db = require("../config/db");
 
 const transactionModel = {
-  all: () => {
+  totalData: () => {
     return new Promise((resolve, reject) => {
-      db.query(`SELECT * FROM transaction`, (err, result) => {
+      db.query(`SELECT COUNT(*) AS total from transaction`, (err, res) => {
         if (err) {
           reject(err);
+        } else {
+          resolve(res);
         }
-        resolve(result);
       });
+    });
+  },
+  all: (offsetValue, limitValue, sortQuery, modeQuery) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT * FROM transaction ORDER BY ${sortQuery} ${modeQuery} LIMIT ${limitValue} OFFSET ${offsetValue}
+      `,
+        (err, result) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(result);
+          // console.log(result);
+        }
+      );
     });
   },
   detail: (id) => {
@@ -37,6 +53,17 @@ const transactionModel = {
           }
         }
       );
+    });
+  },
+  destroy: (id) => {
+    return new Promise((resolve, reject) => {
+      db.query(`DELETE FROM transaction WHERE id='${id}'`, (err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
     });
   },
 };

@@ -204,7 +204,6 @@ const productController = {
         });
         return;
       }
-      console.log("hi");
     } catch (error) {
       failed(res, {
         code: 500,

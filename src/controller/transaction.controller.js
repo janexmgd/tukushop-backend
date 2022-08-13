@@ -6,12 +6,34 @@ const { success, failed } = require("../helper/response");
 const transactionController = {
   all: async (req, res) => {
     try {
-      const result = await transactionModel.all();
+      const { page, limit, sort, mode } = req.query;
+      const pageValue = page ? Number(page) : 1;
+      const limitValue = limit ? Number(limit) : 5;
+      const offsetValue = (pageValue - 1) * limitValue;
+      const sortQuery = sort ? sort : "created_at";
+      const modeQuery = mode ? mode : "ASC";
+      const allData = await transactionModel.totalData();
+
+      const totalData = allData.rows[0].total;
+      const result = await transactionModel.all(
+        offsetValue,
+        limitValue,
+        sortQuery,
+        modeQuery
+      );
+
+      const pagination = {
+        currentPage: pageValue,
+        dataPerPage: limitValue,
+        totalPage: Math.ceil(totalData / limitValue),
+      };
+
       success(res, {
         code: 200,
         status: "success",
-        message: "Success get all transaction",
+        message: `Success get transaction`,
         data: result.rows,
+        pagination,
       });
     } catch (error) {
       failed(res, {
@@ -104,6 +126,26 @@ const transactionController = {
         message: error.message,
         error: [],
       });
+    }
+  },
+  destroy: async (req, res) => {
+    const { id } = req.params;
+    const result = await transactionModel.destroy(id);
+    if (result.rowCount > 0) {
+      success(res, {
+        code: 200,
+        status: "success",
+        message: `Success delete product with id ${id}`,
+        data: [],
+      });
+    } else {
+      failed(res, {
+        code: 500,
+        status: "error",
+        message: `Product with id ${id} not found`,
+        error: [],
+      });
+      return;
     }
   },
 };
