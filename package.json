@@ -1,7 +1,7 @@
 {
   "name": "tukushop-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple API for beginner",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,20 @@
     "dev": "nodemon index.js",
     "lint": "eslint --fix --ext .js,.jsx ."
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/janexmgd/tukushop-backend.git"
+  },
+  "keywords": [
+    "API",
+    "Node.js",
+    "Express.js",
+    "PostgreSQL"
+  ],
+  "contributors": [
+    "Denny Wahyu Prasetyo"
+  ],
+  "author": "Denny Wahyu Prasetyo",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.0",
