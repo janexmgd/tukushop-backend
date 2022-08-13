@@ -11,7 +11,7 @@
     <a href="#table-of-contents"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://ankasa-ticketing-app.herokuapp.com/">View Web Service</a>
+    <!-- <a href="https://ankasa-ticketing-app.herokuapp.com/">View Web Service</a> -->
     ·
     <a href="https://github.com/janexmgd/tukushop-backend/issues">Report Bug</a>
     ·
@@ -75,7 +75,7 @@ This is an example of how to list things you need to use the software and how to
 
 - [Node.js](https://nodejs.org/en/)
 - [Postman](https://www.getpostman.com/) for testing
-- [Database](./blanja.sql)
+- [Database](./db.sql)
 
 ### Installation
 
