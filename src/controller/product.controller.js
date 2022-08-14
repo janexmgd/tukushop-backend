@@ -74,31 +74,21 @@ const productController = {
   },
   detail: async (req, res) => {
     try {
-      try {
-        const { id } = req.params;
-        const result = await productModel.detail(id);
-        success(res, {
-          code: 200,
-          status: "success",
-          message: "Success get product by id",
-          data: result.rows[0],
-        });
-      } catch (err) {
-        failed(res, {
-          code: 500,
-          status: "error",
-          message: err.message,
-          error: [],
-        });
-      }
-    } catch (error) {
+      const { id } = req.params;
+      const result = await productModel.detail(id);
+      success(res, {
+        code: 200,
+        status: "success",
+        message: "Success get product by id",
+        data: result.rows[0],
+      });
+    } catch (err) {
       failed(res, {
         code: 500,
         status: "error",
-        message: error.message,
+        message: err.message,
         error: [],
       });
-      return;
     }
   },
   insert: async (req, res) => {

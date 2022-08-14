@@ -3,6 +3,7 @@ const cors = require("cors");
 const xssClean = require("xss-clean");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
+const { failed } = require("./src/helper/response");
 require("dotenv").config();
 const app = express();
 app.use(xssClean());
@@ -15,6 +16,14 @@ app.use(require("./src/router/product.route"));
 app.use(require("./src/router/transaction.route"));
 app.get("/", (req, res) => {
   res.json("Hello im here");
+});
+app.all("*", (req, res) => {
+  failed(res, {
+    code: 503,
+    status: "error",
+    message: `Service unavailable`,
+    error: [],
+  });
 });
 
 const PORT = process.env.PORT || 3004;
