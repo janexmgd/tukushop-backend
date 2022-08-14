@@ -106,7 +106,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"\"\n}",
+							"raw": "{\n    \"name\":\"test baru lagiissss\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -114,7 +114,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:4325/category/1b21bdf3-b613-4640-bbbf-7a80501a3b84",
+							"raw": "http://localhost:4325/category/3b9016bb-a7a0-4d4d-9214-df54514ca2bf",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -122,7 +122,7 @@
 							"port": "4325",
 							"path": [
 								"category",
-								"1b21bdf3-b613-4640-bbbf-7a80501a3b84"
+								"3b9016bb-a7a0-4d4d-9214-df54514ca2bf"
 							]
 						}
 					},
@@ -159,7 +159,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4325/product?search&sort&mode&page&limit",
+							"raw": "http://localhost:4325/product?search=&sort=stock&mode=asc&page=1&limit=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -171,23 +171,23 @@
 							"query": [
 								{
 									"key": "search",
-									"value": null
+									"value": ""
 								},
 								{
 									"key": "sort",
-									"value": null
+									"value": "stock"
 								},
 								{
 									"key": "mode",
-									"value": null
+									"value": "asc"
 								},
 								{
 									"key": "page",
-									"value": null
+									"value": "1"
 								},
 								{
 									"key": "limit",
-									"value": null
+									"value": "1"
 								}
 							]
 						}
@@ -321,7 +321,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4325/transaction?mode=DESC",
+							"raw": "http://localhost:4325/transaction?mode=DESC&limit=10&page",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -334,6 +334,14 @@
 								{
 									"key": "mode",
 									"value": "DESC"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": null
 								}
 							]
 						}
@@ -367,7 +375,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"productId\":\"118c7bc9-4dcd-4ca8-baa6-f6d4bee147d0\",\n    \"productAmount\":\"10\"\n}",
+							"raw": "{\n    \"productId\":\"118c7bc9-4dcd-4ca8-baa6-f6d4bee147d0\",\n    \"productAmount\":\"3\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -383,6 +391,43 @@
 							"port": "4325",
 							"path": [
 								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "full join transactionproductcategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4325/transaction-product-category",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"transaction-product-category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:4325/transaction/5c4d0683-4195-4a08-939e-dcd4dd547996o",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"transaction",
+								"5c4d0683-4195-4a08-939e-dcd4dd547996o"
 							]
 						}
 					},
