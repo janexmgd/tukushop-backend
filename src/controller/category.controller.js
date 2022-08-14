@@ -75,12 +75,21 @@ const categoryController = {
     try {
       const { id } = req.params;
       const result = await categoryModel.detail(id);
-      success(res, {
-        code: 200,
-        status: "success",
-        message: "Success get category by id",
-        data: result.rows[0],
-      });
+      if (result.rowCount > 0) {
+        success(res, {
+          code: 200,
+          status: "success",
+          message: "Success get category by id",
+          data: result.rows[0],
+        });
+      } else {
+        failed(res, {
+          code: 500,
+          status: "success",
+          message: `category with id ${id} not found`,
+          data: result.rows[0],
+        });
+      }
     } catch (err) {
       failed(res, {
         code: 500,
@@ -117,13 +126,22 @@ const categoryController = {
       const { id } = req.params;
       const { name } = req.body;
       const data = { id, name };
-      await categoryModel.update(data);
-      success(res, {
-        code: 200,
-        status: "success",
-        message: "Success get category by id",
-        data: data,
-      });
+      const result = await categoryModel.update(data);
+      if (result.rowCount > 0) {
+        success(res, {
+          code: 200,
+          status: "success",
+          message: "Success update category",
+          data: data,
+        });
+      } else {
+        failed(res, {
+          code: 500,
+          status: "success",
+          message: `category with id ${id} not found`,
+          data: data,
+        });
+      }
     } catch (err) {
       failed(res, {
         code: 500,
@@ -136,13 +154,22 @@ const categoryController = {
   destroy: async (req, res) => {
     try {
       const { id } = req.params;
-      await categoryModel.destroy(id);
-      success(res, {
-        code: 200,
-        status: "success",
-        message: `Success delete data category with id ${id}`,
-        data: [],
-      });
+      const result = await categoryModel.destroy(id);
+      if (result.rowCount > 0) {
+        success(res, {
+          code: 200,
+          status: "success",
+          message: `Success delete category with id ${id}`,
+          data: [],
+        });
+      } else {
+        failed(res, {
+          code: 500,
+          status: "error",
+          message: `category with id ${id} not found`,
+          error: [],
+        });
+      }
     } catch (err) {
       failed(res, {
         code: 500,

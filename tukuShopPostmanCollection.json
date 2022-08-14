@@ -1,0 +1,394 @@
+{
+	"info": {
+		"_postman_id": "e2eddae6-c51a-4a59-8087-498ac489b968",
+		"name": "beginnerBackend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20196819"
+	},
+	"item": [
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4325/category?page&limit&sort&mode",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"category"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "post",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": null
+								},
+								{
+									"key": "limit",
+									"value": null
+								},
+								{
+									"key": "sort",
+									"value": null
+								},
+								{
+									"key": "mode",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4325/category/e1437861-0b01-46f3-a337-ed21a825f7d1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"category",
+								"e1437861-0b01-46f3-a337-ed21a825f7d1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"anu\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4325/category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4325/category/1b21bdf3-b613-4640-bbbf-7a80501a3b84",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"category",
+								"1b21bdf3-b613-4640-bbbf-7a80501a3b84"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4325/category/38feabfd-5d08-4de1-a5b8-48d6aff9d2c1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"category",
+								"38feabfd-5d08-4de1-a5b8-48d6aff9d2c1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4325/product?search&sort&mode&page&limit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"product"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": null
+								},
+								{
+									"key": "sort",
+									"value": null
+								},
+								{
+									"key": "mode",
+									"value": null
+								},
+								{
+									"key": "page",
+									"value": null
+								},
+								{
+									"key": "limit",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4325/product/118c7bc9-4dcd-4ca8-baa6-f6d4bee147d0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"product",
+								"118c7bc9-4dcd-4ca8-baa6-f6d4bee147d0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"poster sao\",\n    \"stock\":928,\n    \"price\":12000,\n    \"categoryId\":\"606b5ecc-ec12-4b69-b373-56a24100882e\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4325/product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"poster robin chan arc dressrosa\",\n    \"stock\":7484,\n    \"price\":20000,\n    \"categoryId\":\"606b5ecc-ec12-4b69-b373-56a24100882e\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4325/product/606b5ecc-ec12-4b69-b373-56a24100882e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"product",
+								"606b5ecc-ec12-4b69-b373-56a24100882e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4325/product/ee039683-53c4-4c3a-b991-e5e0064eece0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"product",
+								"ee039683-53c4-4c3a-b991-e5e0064eece0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "productCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4325/product-category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"product-category"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4325/transaction?mode=DESC",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"transaction"
+							],
+							"query": [
+								{
+									"key": "mode",
+									"value": "DESC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4325/transaction/5c4d0683-4195-4a08-939e-dcd4dd547996",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"transaction",
+								"5c4d0683-4195-4a08-939e-dcd4dd547996"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add transaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\":\"118c7bc9-4dcd-4ca8-baa6-f6d4bee147d0\",\n    \"productAmount\":\"10\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4325/transaction",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4325",
+							"path": [
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
