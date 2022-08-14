@@ -48,12 +48,21 @@ const transactionController = {
     try {
       const { id } = req.params;
       const result = await transactionModel.detail(id);
-      success(res, {
-        code: 200,
-        status: "success",
-        message: "Success transaction",
-        data: result.rows[0],
-      });
+      if (result.rowCount > 0) {
+        success(res, {
+          code: 200,
+          status: "success",
+          message: "Success transaction",
+          data: result.rows[0],
+        });
+      } else {
+        failed(res, {
+          code: 200,
+          status: "success",
+          message: `transaction with id ${id} not found`,
+          data: result.rows[0],
+        });
+      }
     } catch (error) {
       failed(res, {
         code: 500,
@@ -135,17 +144,35 @@ const transactionController = {
       success(res, {
         code: 200,
         status: "success",
-        message: `Success delete product with id ${id}`,
+        message: `Success delete transaction with id ${id}`,
         data: [],
       });
     } else {
       failed(res, {
         code: 500,
         status: "error",
-        message: `Product with id ${id} not found`,
+        message: `transaction with id ${id} not found`,
         error: [],
       });
       return;
+    }
+  },
+  transactionProductCategory: async (req, res) => {
+    try {
+      const result = await transactionModel.transactionProductCategory();
+      success(res, {
+        code: 200,
+        status: "success",
+        message: `Success get transaction full detail`,
+        data: result.rows,
+      });
+    } catch (error) {
+      failed(res, {
+        code: 500,
+        status: "error",
+        message: `${error.message}`,
+        error: [],
+      });
     }
   },
 };

@@ -66,6 +66,30 @@ const transactionModel = {
       });
     });
   },
+  transactionProductCategory: () => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT
+        transaction.id AS transactionId,transaction.product_id AS transactionProducId,
+        transaction.product_amount AS transactionProductAmount,
+        transaction.total_payment AS transactionTotalPayment,
+        transaction.created_at AS transactionCreatedAt,
+        products.id,products.name AS productName,products.stock AS productStock,
+        products.price AS productPrice,products.category_id,
+        category.id AS categoryId,category.name AS categoryName
+        from transaction
+      INNER JOIN products ON transaction.product_id = products.id
+      INNER JOIN category ON products.category_id = category.id
+      `,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
+        }
+      );
+    });
+  },
 };
 
 module.exports = transactionModel;

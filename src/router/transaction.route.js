@@ -4,7 +4,13 @@ const router = express.Router();
 
 // controller here
 
-const { insert, all, detail } = require("../controller/transaction.controller");
+const {
+  insert,
+  all,
+  detail,
+  transactionProductCategory,
+  destroy,
+} = require("../controller/transaction.controller");
 
 // validation
 const {
@@ -17,6 +23,7 @@ const validationResult = require("../middleware/validation");
 router
   .get("/transaction", all) // to get all transaction
   .get("/transaction/:id", detail) // to get transaction by id
-  .post("/transaction", addTransactionValidation, validationResult, insert); // to add transaction
-
+  .post("/transaction", addTransactionValidation, validationResult, insert) // to add transaction
+  .delete("/transaction/:id", destroy) // to delete
+  .get("/transaction-product-category", transactionProductCategory); // full list
 module.exports = router;
