@@ -12,7 +12,7 @@ const {
 } = require("../validation/transaction.validation");
 
 // middleware
-const validationResult = require("../validation/transaction.validation");
+const validationResult = require("../middleware/validation");
 
 router
   .get("/transaction", all) // to get all transaction
