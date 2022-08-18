@@ -14,6 +14,7 @@ app.use(helmet());
 app.use(require("./src/router/category.route"));
 app.use(require("./src/router/product.route"));
 app.use(require("./src/router/transaction.route"));
+app.use(require("./src/router/auth.route"));
 app.get("/", (req, res) => {
   res.json("Hello im here");
 });

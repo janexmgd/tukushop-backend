@@ -1,0 +1,3 @@
+level 
+  1 = buyer
+  2 = seller
