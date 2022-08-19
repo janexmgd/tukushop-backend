@@ -1,12 +1,18 @@
 const express = require("express");
 
 // controller here
-const { detail, all, update } = require("../controller/buyer.controller");
+const {
+  detail,
+  all,
+  update,
+  updatePhoto,
+} = require("../controller/buyer.controller");
 
 // middleware
 const jwtAuth = require("../middleware/jwtAuth");
 const { isBuyer, isAdmin } = require("../middleware/authorization");
 const validationResult = require("../middleware/validation");
+const upload = require("../middleware/upload");
 
 // validation
 const { updateValidation } = require("../validation/buyer.validation");
@@ -20,6 +26,7 @@ router
     "/buyer/:id",
     jwtAuth,
     isBuyer,
+    upload,
     updateValidation,
     validationResult,
     update

@@ -1,5 +1,6 @@
 const buyerModel = require("../model/buyer.model");
 const { failed, success } = require("../helper/response");
+const deleteFile = require("../helper/deleteFile");
 
 const buyerController = {
   all: async (req, res) => {
@@ -104,21 +105,68 @@ const buyerController = {
       const result = await buyerModel.findBy("id", id);
       if (result.rowCount) {
         const { name, phone, gender, birth } = req.body;
-        const data = {
-          id,
-          name,
-          phone,
-          gender,
-          birth,
-        };
-        await buyerModel.update(data);
-        const newData = await buyerModel.findBy("id", id);
-        success(res, {
-          code: 200,
-          status: "success",
-          message: "Success update buyer",
-          data: newData.rows[0],
-        });
+        let photo;
+        if (req.file) {
+          // non delete
+          if (result.rows[0].photo == "user_default.png") {
+            photo = req.file.filename;
+            const data = {
+              id,
+              name,
+              phone,
+              gender,
+              birth,
+              photo,
+            };
+            await buyerModel.update(data);
+            const newData = await buyerModel.findBy("id", id);
+            success(res, {
+              code: 200,
+              status: "success",
+              message: "Success update buyer",
+              data: newData.rows[0],
+            });
+          } else {
+            // delete file
+            photo = req.file.filename;
+            deleteFile(`public/${result.rows[0].photo}`);
+            const data = {
+              id,
+              name,
+              phone,
+              gender,
+              birth,
+              photo,
+            };
+            await buyerModel.update(data);
+            const newData = await buyerModel.findBy("id", id);
+            success(res, {
+              code: 200,
+              status: "success",
+              message: "Success update buyer",
+              data: newData.rows[0],
+            });
+          }
+        } else {
+          // tanpa upload photo
+          photo = result.rows[0].photo;
+          const data = {
+            id,
+            name,
+            phone,
+            gender,
+            birth,
+            photo,
+          };
+          await buyerModel.update(data);
+          const newData = await buyerModel.findBy("id", id);
+          success(res, {
+            code: 200,
+            status: "success",
+            message: "Success update buyer",
+            data: newData.rows[0],
+          });
+        }
       } else {
         failed(res, {
           code: 500,
