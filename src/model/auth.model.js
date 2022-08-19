@@ -42,6 +42,21 @@ const authModel = {
       );
     });
   },
+  insertToSeller: (data) => {
+    const { sellerId, userId, name, phone, storeName, photo } = data;
+    return new Promise((resolve, reject) => {
+      db.query(
+        `INSERT INTO seller(id,user_id,name,phone,store_name,photo) 
+      VALUES ('${sellerId}','${userId}','${name}','${phone}','${storeName}','${photo}')`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
+        }
+      );
+    });
+  },
   verifyingUser: (token) => {
     return new Promise((resolve, reject) => {
       db.query(
