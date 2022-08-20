@@ -1,7 +1,7 @@
 const express = require("express");
 
 // controller
-const { update } = require("../controller/seller.controller");
+const { update, detail, all } = require("../controller/seller.controller");
 
 // middleware
 const jwtAuth = require("../middleware/jwtAuth");
@@ -14,6 +14,17 @@ const { updateValidation } = require("../validation/seller.validation");
 
 const router = express.Router();
 
-router.put("/seller/:id", jwtAuth, isSeller, upload, updateValidation, update);
+router
+  .get("/seller", jwtAuth, all)
+  .get("/seller/:id", jwtAuth, detail)
+  .put(
+    "/seller/:id",
+    jwtAuth,
+    isSeller,
+    upload,
+    updateValidation,
+    validationResult,
+    update
+  );
 
 module.exports = router;
