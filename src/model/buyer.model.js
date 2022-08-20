@@ -31,7 +31,8 @@ const buyerModel = {
     const { id, name, phone, gender, birth, photo } = data;
     return new Promise((resolve, reject) => {
       db.query(
-        `UPDATE buyer SET name='${name}',phone='${phone}',gender=${gender},birth='${birth}',photo='${photo}' WHERE id='${id}'`,
+        `UPDATE buyer SET name='${name}',phone='${phone}',gender=${gender},
+        birth='${birth}',photo='${photo}' WHERE id='${id}'`,
         (err, res) => {
           if (err) {
             reject(err);
@@ -41,6 +42,7 @@ const buyerModel = {
       );
     });
   },
+
   findBy: (row, keyword) => {
     return new Promise((resolve, reject) => {
       db.query(`SELECT * FROM buyer WHERE ${row}='${keyword}'`, (err, res) => {

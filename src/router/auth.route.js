@@ -8,10 +8,13 @@ const {
   registerSeller,
   loginSeller,
   loginAdmin,
+  updateStatus,
 } = require("../controller/auth.controller");
 
 // middleware
 const validationResult = require("../middleware/validation");
+const jwtAuth = require("../middleware/jwtAuth");
+const { isAdmin } = require("../middleware/authorization");
 
 // validation
 const {
@@ -20,6 +23,7 @@ const {
   registerSellerValidation,
   loginSellerValidation,
   loginAdminValidation,
+  statusValidation,
 } = require("../validation/auth.validation");
 
 const router = express.Router();
@@ -45,5 +49,13 @@ router
     loginSeller
   )
   .post("/auth/login-admin", loginAdminValidation, validationResult, loginAdmin)
-  .get("/auth/verify-email", verifyEmail); // verify email
+  .get("/auth/verify-email", verifyEmail) // verify email
+  .put(
+    "/auth-status/:id",
+    jwtAuth,
+    isAdmin,
+    statusValidation,
+    validationResult,
+    updateStatus
+  ); // update status auth
 module.exports = router;

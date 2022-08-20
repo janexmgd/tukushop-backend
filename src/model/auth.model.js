@@ -70,5 +70,19 @@ const authModel = {
       );
     });
   },
+  updateStatus: (data) => {
+    const { isActive, id } = data;
+    return new Promise((resolve, reject) => {
+      db.query(
+        `UPDATE auth SET is_active = ${isActive} WHERE id='${id}'`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
+        }
+      );
+    });
+  },
 };
 module.exports = authModel;

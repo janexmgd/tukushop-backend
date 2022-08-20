@@ -1,6 +1,7 @@
 const buyerModel = require("../model/buyer.model");
 const { failed, success } = require("../helper/response");
 const deleteFile = require("../helper/deleteFile");
+const e = require("express");
 
 const buyerController = {
   all: async (req, res) => {

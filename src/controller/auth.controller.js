@@ -467,5 +467,50 @@ const authController = {
       });
     }
   },
+  updateStatus: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { isActive } = req.body;
+      const check = await authModel.findBy("id", id);
+      if (check.rowCount == 1) {
+        if (isActive == true && check.rows[0].is_active == true) {
+          failed(res, {
+            code: 500,
+            status: "failed",
+            message: `user with id ${id} already active`,
+          });
+        } else if (isActive == false && check.rows[0].is_active == false) {
+          failed(res, {
+            code: 500,
+            status: "failed",
+            message: `user with id ${id} already nonactive`,
+          });
+        } else {
+          const data = { id, isActive };
+          await authModel.updateStatus(data);
+          const newData = await authModel.findBy("id", id);
+          success(res, {
+            code: 200,
+            status: "success",
+            message: "Success update status buyer",
+            data: newData.rows[0],
+          });
+        }
+      } else {
+        failed(res, {
+          code: 500,
+          status: "failed",
+          message: `user with id ${id} not found`,
+        });
+      }
+    } catch (error) {
+      // failed(res, {
+      //   code: 500,
+      //   status: "failed",
+      //   message: error.message,
+      // });
+      console.log(error);
+    }
+  },
 };
 module.exports = authController;

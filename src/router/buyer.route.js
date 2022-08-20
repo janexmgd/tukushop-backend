@@ -1,12 +1,7 @@
 const express = require("express");
 
 // controller here
-const {
-  detail,
-  all,
-  update,
-  updatePhoto,
-} = require("../controller/buyer.controller");
+const { detail, all, update } = require("../controller/buyer.controller");
 
 // middleware
 const jwtAuth = require("../middleware/jwtAuth");

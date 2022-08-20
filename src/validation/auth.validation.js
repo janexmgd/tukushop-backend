@@ -107,10 +107,16 @@ const loginAdminValidation = [
     "Password must include one lowercase character, one uppercase character, a number, and a special character."
   ).matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/, "i"),
 ];
+const statusValidation = [
+  // gender
+  check("isActive", "isActive cannot be empty").not().isEmpty(),
+  check("isActive", "isActive value must be true or false").isBoolean(),
+];
 module.exports = {
   registerBuyerValidation,
   loginBuyerValidation,
   registerSellerValidation,
   loginSellerValidation,
   loginAdminValidation,
+  statusValidation,
 };
