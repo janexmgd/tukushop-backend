@@ -16,6 +16,7 @@ app.use(require("./src/router/product.route"));
 app.use(require("./src/router/transaction.route"));
 app.use(require("./src/router/auth.route"));
 app.use(require("./src/router/buyer.route"));
+app.use(require("./src/router/seller.route"));
 app.get("/", (req, res) => {
   res.json("Hello im here");
 });
