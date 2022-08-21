@@ -1,7 +1,7 @@
 const authModel = require("../model/auth.model");
 const { v4: uuidv4 } = require("uuid");
 const { success, failed } = require("../helper/response");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const sendMail = require("../helper/sendEmail");
 const jwtToken = require("../helper/generateJWTToken");
