@@ -33,7 +33,7 @@ const multerUpload = multer({
       cb(null, true);
     } else {
       const error = {
-        message: "file must be jpg or png",
+        message: "file must be jpeg,jpg or png",
       };
       cb(error, false);
     }
