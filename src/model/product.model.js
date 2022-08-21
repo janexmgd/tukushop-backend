@@ -38,10 +38,10 @@ const productModel = {
   },
   insert: (data) => {
     return new Promise((resolve, reject) => {
-      const { id, name, stock, price, categoryId } = data;
+      const { id, sellerId, name, stock, price, categoryId } = data;
       db.query(
-        `INSERT INTO products(id,name,stock,price,category_id) VALUES
-        ('${id}','${name}',${stock},${price},'${categoryId}')`,
+        `INSERT INTO products(id,seller_id,name,stock,price,category_id) VALUES
+        ('${id}','${sellerId}','${name}',${stock},${price},'${categoryId}')`,
         (err, res) => {
           if (err) {
             reject(err);

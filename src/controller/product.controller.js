@@ -1,5 +1,6 @@
 const productModel = require("../model/product.model");
 const categoryModel = require("../model/category.model");
+const sellerModel = require("../model/seller.model");
 const { v4: uuidv4 } = require("uuid");
 const { success, failed } = require("../helper/response");
 
@@ -95,12 +96,18 @@ const productController = {
     try {
       const { name, stock, price, categoryId } = req.body;
       const id = uuidv4();
+      const seller = await sellerModel.findBy(
+        "user_id",
+        req.APP_DATA.tokenDecoded.id
+      );
+      const sellerId = seller.rows[0].id;
       const data = {
         id,
         name,
         stock,
         price,
         categoryId,
+        sellerId,
       };
       const cekCategoryId = await categoryModel.detail(categoryId);
       if (cekCategoryId.rowCount == 0) {
@@ -136,13 +143,7 @@ const productController = {
     try {
       const { id } = req.params;
       const { name, stock, price, categoryId } = req.body;
-      const data = {
-        id,
-        name,
-        stock,
-        price,
-        categoryId,
-      };
+
       const cekCategoryId = await categoryModel.detail(categoryId);
       if (cekCategoryId.rowCount == 0) {
         const error = {
@@ -155,13 +156,33 @@ const productController = {
           error: [],
         });
       } else {
-        await productModel.update(data);
-        success(res, {
-          code: 200,
-          status: "success",
-          message: "Success update product",
-          data: data,
-        });
+        const cekProduct = await productModel.detail(id);
+        if (cekProduct.rowCount == 1) {
+          const data = {
+            id,
+            name,
+            stock,
+            price,
+            categoryId,
+          };
+          await productModel.update(data);
+          success(res, {
+            code: 200,
+            status: "success",
+            message: "Success update product",
+            data: data,
+          });
+        } else {
+          const error = {
+            message: `Product with id ${id} not found`,
+          };
+          failed(res, {
+            code: 403,
+            status: "error",
+            message: error.message,
+            error: [],
+          });
+        }
       }
     } catch (error) {
       failed(res, {

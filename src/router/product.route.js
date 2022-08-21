@@ -14,6 +14,8 @@ const {
 
 // middleware
 const validationResult = require("../middleware/validation");
+const jwtAuth = require("../middleware/jwtAuth");
+const { isSeller } = require("../middleware/authorization");
 
 // validation
 const {
@@ -22,10 +24,24 @@ const {
 } = require("../validation/product.validation");
 
 router
-  .get("/product", all) // to get all
-  .get("/product/:id", detail) // to get detail id
-  .post("/product", addProductValidation, validationResult, insert) // to insert
-  .put("/product/:id", updateProductValidation, validationResult, update) // to update product
-  .delete("/product/:id", destroy) // to delete product
-  .get("/product-category", productCategory); // to get product join category
+  .get("/product", jwtAuth, all) // to get all
+  .get("/product/:id", jwtAuth, detail) // to get detail id
+  .post(
+    "/product",
+    jwtAuth,
+    isSeller,
+    addProductValidation,
+    validationResult,
+    insert
+  ) // to insert
+  .put(
+    "/product/:id",
+    jwtAuth,
+    isSeller,
+    updateProductValidation,
+    validationResult,
+    update
+  ) // to update product
+  .delete("/product/:id", jwtAuth, isSeller, destroy) // to delete product
+  .get("/product-category", jwtAuth, productCategory); // to get product join category
 module.exports = router;

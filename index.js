@@ -18,7 +18,9 @@ app.use(require("./src/router/auth.route"));
 app.use(require("./src/router/buyer.route"));
 app.use(require("./src/router/seller.route"));
 app.get("/", (req, res) => {
-  res.json("Hello im here");
+  res.json(`Tukushop API
+  Made with ❤️ by Denny Wahyu Prasetyo
+  `);
 });
 app.all("*", (req, res) => {
   failed(res, {

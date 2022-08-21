@@ -40,10 +40,11 @@ const transactionModel = {
   },
   insert: (data) => {
     return new Promise((resolve, reject) => {
-      const { id, productId, productAmount, createdAt, totalPayment } = data;
+      const { id, buyerId, productId, productAmount, createdAt, totalPayment } =
+        data;
       db.query(
-        `INSERT INTO transaction(id,product_id,product_amount,total_payment,created_at)
-    VALUES ('${id}','${productId}',${productAmount},${totalPayment},'${createdAt}')
+        `INSERT INTO transaction(id,buyer_id,product_id,product_amount,total_payment,created_at)
+    VALUES ('${id}','${buyerId}','${productId}',${productAmount},${totalPayment},'${createdAt}')
     `,
         (err, res) => {
           if (err) {

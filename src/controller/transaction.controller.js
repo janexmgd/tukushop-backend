@@ -1,5 +1,6 @@
 const transactionModel = require("../model/transaction.model");
 const productModel = require("../model/product.model");
+const buyerModel = require("../model/buyer.model");
 const { v4: uuidv4 } = require("uuid");
 const { success, failed } = require("../helper/response");
 
@@ -92,8 +93,14 @@ const transactionController = {
             date.setMinutes(date.getMinutes() - date.getTimezoneOffset())
           );
           const createdAt = dateOffset.toISOString();
+          const buyer = await buyerModel.findBy(
+            "user_id",
+            req.APP_DATA.tokenDecoded.id
+          );
+          const buyerId = buyer.rows[0].id;
           const data = {
             id,
+            buyerId,
             productId,
             productAmount,
             totalPayment,
