@@ -48,8 +48,7 @@ const sellerModel = {
         store_description='${storeDescription}',photo='${photo}' WHERE id='${id}'`,
         (err, res) => {
           if (err) {
-            // reject(err);
-            console.log(err);
+            reject(err);
           }
           resolve(res);
         }

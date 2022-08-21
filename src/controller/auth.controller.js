@@ -67,7 +67,6 @@ const authController = {
     } catch (error) {
       failed(res, {
         code: 500,
-        code: 500,
         status: "error",
         message: error.message,
         error: [],
@@ -154,7 +153,6 @@ const authController = {
       }
     } catch (error) {
       failed(res, {
-        code: 500,
         code: 500,
         status: "error",
         message: error.message,
@@ -330,7 +328,6 @@ const authController = {
     } catch (error) {
       failed(res, {
         code: 500,
-        code: 500,
         status: "error",
         message: error.message,
         error: [],
@@ -419,7 +416,6 @@ const authController = {
     } catch (error) {
       failed(res, {
         code: 500,
-        code: 500,
         status: "error",
         message: error.message,
         error: [],
@@ -451,7 +447,6 @@ const authController = {
         };
         failed(res, {
           code: 500,
-          code: 500,
           status: "error",
           message: err.message,
           error: [],
@@ -459,7 +454,6 @@ const authController = {
       }
     } catch (error) {
       failed(res, {
-        code: 500,
         code: 500,
         status: "error",
         message: error.message,

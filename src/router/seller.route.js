@@ -5,7 +5,7 @@ const { update, detail, all } = require("../controller/seller.controller");
 
 // middleware
 const jwtAuth = require("../middleware/jwtAuth");
-const { isSeller, isAdmin } = require("../middleware/authorization");
+const { isSeller } = require("../middleware/authorization");
 const validationResult = require("../middleware/validation");
 const upload = require("../middleware/upload");
 
