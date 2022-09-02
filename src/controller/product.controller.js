@@ -1,19 +1,20 @@
-const productModel = require("../model/product.model");
-const categoryModel = require("../model/category.model");
-const sellerModel = require("../model/seller.model");
-const { v4: uuidv4 } = require("uuid");
-const { success, failed } = require("../helper/response");
+const productModel = require('../model/product.model');
+const categoryModel = require('../model/category.model');
+const sellerModel = require('../model/seller.model');
+const { v4: uuidv4 } = require('uuid');
+const { success, failed } = require('../helper/response');
+const deleteFile = require('../helper/deleteFile');
 
 const productController = {
   all: async (req, res) => {
     try {
       const { search, page, limit, sort, mode } = req.query;
-      const searchQuery = search || "";
+      const searchQuery = search || '';
       const pageValue = page ? Number(page) : 1;
       const limitValue = limit ? Number(limit) : 5;
       const offsetValue = (pageValue - 1) * limitValue;
-      const sortQuery = sort ? sort : "name";
-      const modeQuery = mode ? mode : "ASC";
+      const sortQuery = sort ? sort : 'name';
+      const modeQuery = mode ? mode : 'ASC';
       const allData = await productModel.totalData();
 
       const totalData = allData.rows[0].total;
@@ -33,8 +34,8 @@ const productController = {
           };
           success(res, {
             code: 200,
-            status: "success",
-            message: "Success get all product",
+            status: 'success',
+            message: 'Success get all product',
             data: result.rows,
             pagination,
           });
@@ -44,7 +45,7 @@ const productController = {
           };
           failed(res, {
             code: 500,
-            status: "error",
+            status: 'error',
             message: err.message,
             error: [],
           });
@@ -58,7 +59,7 @@ const productController = {
 
         success(res, {
           code: 200,
-          status: "success",
+          status: 'success',
           message: `Success get all product`,
           data: result.rows,
           pagination,
@@ -67,7 +68,7 @@ const productController = {
     } catch (error) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: error.message,
         error: [],
       });
@@ -79,14 +80,14 @@ const productController = {
       const result = await productModel.detail(id);
       success(res, {
         code: 200,
-        status: "success",
-        message: "Success get product by id",
+        status: 'success',
+        message: 'Success get product by id',
         data: result.rows[0],
       });
     } catch (err) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: err.message,
         error: [],
       });
@@ -94,45 +95,60 @@ const productController = {
   },
   insert: async (req, res) => {
     try {
-      const { name, stock, price, categoryId } = req.body;
+      const { name, stock, price, isNew, description, categoryId } = req.body;
       const id = uuidv4();
       const seller = await sellerModel.findBy(
-        "user_id",
+        'user_id',
         req.APP_DATA.tokenDecoded.id
       );
       const sellerId = seller.rows[0].id;
-      const data = {
-        id,
-        name,
-        stock,
-        price,
-        categoryId,
-        sellerId,
-      };
-      const cekCategoryId = await categoryModel.detail(categoryId);
-      if (cekCategoryId.rowCount == 0) {
-        const error = {
-          message: `Category with id ${categoryId} not found`,
+      if (req.file) {
+        const photo = req.file.filename;
+        const data = {
+          id,
+          name,
+          stock,
+          price,
+          isNew,
+          description,
+          photo,
+          categoryId,
+          sellerId,
         };
+        // return console.log(data);
+        const cekCategoryId = await categoryModel.detail(categoryId);
+        if (cekCategoryId.rowCount == 0) {
+          const error = {
+            message: `Category with id ${categoryId} not found`,
+          };
+          failed(res, {
+            code: 403,
+            status: 'error',
+            message: error.message,
+            error: [],
+          });
+        } else {
+          await productModel.insert(data);
+          success(res, {
+            code: 200,
+            status: 'success',
+            message: 'Success adding product',
+            data: data,
+          });
+        }
+      } else {
         failed(res, {
-          code: 403,
-          status: "error",
-          message: error.message,
+          code: 500,
+          status: 'error',
+          message: 'photo is required',
           error: [],
         });
-      } else {
-        await productModel.insert(data);
-        success(res, {
-          code: 200,
-          status: "success",
-          message: "Success adding product",
-          data: data,
-        });
+        return;
       }
     } catch (error) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: error.message,
         error: [],
       });
@@ -142,7 +158,7 @@ const productController = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
-      const { name, stock, price, categoryId } = req.body;
+      const { name, stock, price, isNew, description, categoryId } = req.body;
 
       const cekCategoryId = await categoryModel.detail(categoryId);
       if (cekCategoryId.rowCount == 0) {
@@ -151,34 +167,63 @@ const productController = {
         };
         failed(res, {
           code: 403,
-          status: "error",
+          status: 'error',
           message: error.message,
           error: [],
         });
       } else {
         const cekProduct = await productModel.detail(id);
         if (cekProduct.rowCount == 1) {
-          const data = {
-            id,
-            name,
-            stock,
-            price,
-            categoryId,
-          };
-          await productModel.update(data);
-          success(res, {
-            code: 200,
-            status: "success",
-            message: "Success update product",
-            data: data,
-          });
+          let photo;
+          if (req.file) {
+            photo = req.file.filename;
+            deleteFile(`public/${cekProduct.rows[0].photo}`);
+            const data = {
+              id,
+              name,
+              stock,
+              price,
+              isNew,
+              description,
+              photo,
+              categoryId,
+            };
+            await productModel.update(data);
+            const newData = await productModel.detail(id);
+            success(res, {
+              code: 200,
+              status: 'success',
+              message: 'Success update product',
+              data: newData.rows[0],
+            });
+          } else {
+            photo = cekProduct.rows[0].photo;
+            const data = {
+              id,
+              name,
+              stock,
+              price,
+              isNew,
+              description,
+              photo,
+              categoryId,
+            };
+            await productModel.update(data);
+            const newData = await productModel.detail(id);
+            success(res, {
+              code: 200,
+              status: 'success',
+              message: 'Success update product',
+              data: newData.rows[0],
+            });
+          }
         } else {
           const error = {
             message: `Product with id ${id} not found`,
           };
           failed(res, {
             code: 403,
-            status: "error",
+            status: 'error',
             message: error.message,
             error: [],
           });
@@ -187,7 +232,7 @@ const productController = {
     } catch (error) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: error.message,
         error: [],
       });
@@ -202,14 +247,14 @@ const productController = {
       if (result.rowCount > 0) {
         success(res, {
           code: 200,
-          status: "success",
+          status: 'success',
           message: `Success delete product with id ${id}`,
           data: [],
         });
       } else {
         failed(res, {
           code: 500,
-          status: "error",
+          status: 'error',
           message: `Product with id ${id} not found`,
           error: [],
         });
@@ -218,7 +263,7 @@ const productController = {
     } catch (error) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: error.message,
         error: [],
       });
@@ -230,14 +275,14 @@ const productController = {
       const result = await productModel.allProductCategory();
       success(res, {
         code: 200,
-        status: "success",
-        message: "Success get all product and category join",
+        status: 'success',
+        message: 'Success get all product and category join',
         data: result.rows,
       });
     } catch (error) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: error.message,
         error: [],
       });

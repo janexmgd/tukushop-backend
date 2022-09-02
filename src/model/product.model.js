@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require('../config/db');
 const productModel = {
   totalData: () => {
     return new Promise((resolve, reject) => {
@@ -38,10 +38,20 @@ const productModel = {
   },
   insert: (data) => {
     return new Promise((resolve, reject) => {
-      const { id, sellerId, name, stock, price, categoryId } = data;
+      const {
+        id,
+        name,
+        stock,
+        price,
+        isNew,
+        description,
+        photo,
+        categoryId,
+        sellerId,
+      } = data;
       db.query(
-        `INSERT INTO products(id,seller_id,name,stock,price,category_id) VALUES
-        ('${id}','${sellerId}','${name}',${stock},${price},'${categoryId}')`,
+        `INSERT INTO products(id,seller_id,name,stock,price,category_id,is_new,description,photo) VALUES
+        ('${id}','${sellerId}','${name}',${stock},${price},'${categoryId}','${isNew}','${description}','${photo}')`,
         (err, res) => {
           if (err) {
             reject(err);
@@ -53,9 +63,10 @@ const productModel = {
   },
   update: (data) => {
     return new Promise((resolve, reject) => {
-      const { id, name, stock, price, categoryId } = data;
+      const { id, name, stock, price, isNew, description, photo, categoryId } =
+        data;
       db.query(
-        `UPDATE products SET name='${name}',stock=${stock},
+        `UPDATE products SET name='${name}',stock=${stock},is_new=${isNew},description='${description}',photo='${photo}',
         price=${price},category_id='${categoryId}'         
         WHERE id='${id}'`,
         (err, result) => {
