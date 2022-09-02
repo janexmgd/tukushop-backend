@@ -1,17 +1,18 @@
-const categoryModel = require("../model/category.model");
-const { v4: uuidv4 } = require("uuid");
-const { success, failed } = require("../helper/response");
+const categoryModel = require('../model/category.model');
+const { v4: uuidv4 } = require('uuid');
+const { success, failed } = require('../helper/response');
+const deleteFile = require('../helper/deleteFile');
 
 const categoryController = {
   all: async (req, res) => {
     try {
       const { search, page, limit, sort, mode } = req.query;
-      const searchQuery = search || "";
+      const searchQuery = search || '';
       const pageValue = page ? Number(page) : 1;
       const limitValue = limit ? Number(limit) : 5;
       const offsetValue = (pageValue - 1) * limitValue;
-      const sortQuery = sort ? sort : "name";
-      const modeQuery = mode ? mode : "ASC";
+      const sortQuery = sort ? sort : 'name';
+      const modeQuery = mode ? mode : 'ASC';
       const allData = await categoryModel.totalData();
 
       const totalData = allData.rows[0].total;
@@ -31,8 +32,8 @@ const categoryController = {
           };
           success(res, {
             code: 200,
-            status: "success",
-            message: "Success get all category",
+            status: 'success',
+            message: 'Success get all category',
             data: result.rows,
             pagination,
           });
@@ -42,7 +43,7 @@ const categoryController = {
           };
           failed(res, {
             code: 500,
-            status: "error",
+            status: 'error',
             message: err.message,
             error: [],
           });
@@ -56,7 +57,7 @@ const categoryController = {
 
         success(res, {
           code: 200,
-          status: "success",
+          status: 'success',
           message: `Success get all category`,
           data: result.rows,
           pagination,
@@ -65,7 +66,7 @@ const categoryController = {
     } catch (err) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: err.message,
         error: [],
       });
@@ -78,14 +79,14 @@ const categoryController = {
       if (result.rowCount > 0) {
         success(res, {
           code: 200,
-          status: "success",
-          message: "Success get category by id",
+          status: 'success',
+          message: 'Success get category by id',
           data: result.rows[0],
         });
       } else {
         failed(res, {
           code: 500,
-          status: "success",
+          status: 'success',
           message: `category with id ${id} not found`,
           data: result.rows[0],
         });
@@ -93,7 +94,7 @@ const categoryController = {
     } catch (err) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: err.message,
         error: [],
       });
@@ -101,20 +102,32 @@ const categoryController = {
   },
   insert: async (req, res) => {
     try {
-      const { name } = req.body;
-      const id = uuidv4();
-      const data = { id, name };
-      await categoryModel.insert(data);
-      success(res, {
-        code: 200,
-        status: "success",
-        message: "Success adding category",
-        data: data,
-      });
+      if (req.file) {
+        const { name } = req.body;
+        const photo = req.file.filename;
+        const id = uuidv4();
+        const data = { id, name, photo };
+
+        await categoryModel.insert(data);
+        success(res, {
+          code: 200,
+          status: 'success',
+          message: 'Success adding category',
+          data: data,
+        });
+      } else {
+        failed(res, {
+          code: 500,
+          status: 'error',
+          message: 'photo for category is required',
+          error: [],
+        });
+        return;
+      }
     } catch (err) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: err.message,
         error: [],
       });
@@ -124,28 +137,46 @@ const categoryController = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
-      const { name } = req.body;
-      const data = { id, name };
-      const result = await categoryModel.update(data);
+      const result = await categoryModel.findBy('id', id);
       if (result.rowCount > 0) {
-        success(res, {
-          code: 200,
-          status: "success",
-          message: "Success update category",
-          data: data,
-        });
+        const { name } = req.body;
+        let photo;
+        if (req.file) {
+          photo = req.file.filename;
+          deleteFile(`public/${result.rows[0].photo}`);
+          const data = { id, name, photo };
+          await categoryModel.update(data);
+          const newData = await categoryModel.findBy('id', id);
+          success(res, {
+            code: 200,
+            status: 'success',
+            message: 'Success update category',
+            data: newData.rows[0],
+          });
+        } else {
+          photo = result.rows[0].photo;
+          const data = { id, name, photo };
+          await categoryModel.update(data);
+          const newData = await categoryModel.findBy('id', id);
+          success(res, {
+            code: 200,
+            status: 'success',
+            message: 'Success update category',
+            data: newData.rows[0],
+          });
+        }
       } else {
         failed(res, {
           code: 500,
-          status: "success",
+          status: 'success',
           message: `category with id ${id} not found`,
-          data: data,
+          data: [],
         });
       }
     } catch (err) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: err.message,
         error: [],
       });
@@ -158,14 +189,14 @@ const categoryController = {
       if (result.rowCount > 0) {
         success(res, {
           code: 200,
-          status: "success",
+          status: 'success',
           message: `Success delete category with id ${id}`,
           data: [],
         });
       } else {
         failed(res, {
           code: 500,
-          status: "error",
+          status: 'error',
           message: `category with id ${id} not found`,
           error: [],
         });
@@ -173,7 +204,7 @@ const categoryController = {
     } catch (err) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: err.message,
         error: [],
       });

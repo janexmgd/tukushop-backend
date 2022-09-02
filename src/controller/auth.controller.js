@@ -1,24 +1,24 @@
-const authModel = require("../model/auth.model");
-const { v4: uuidv4 } = require("uuid");
-const { success, failed } = require("../helper/response");
-const bcrypt = require("bcryptjs");
-const crypto = require("crypto");
-const sendMail = require("../helper/sendEmail");
-const jwtToken = require("../helper/generateJWTToken");
-const sellerModel = require("../model/seller.model");
+const authModel = require('../model/auth.model');
+const { v4: uuidv4 } = require('uuid');
+const { success, failed } = require('../helper/response');
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
+const sendMail = require('../helper/sendEmail');
+const jwtToken = require('../helper/generateJWTToken');
+const sellerModel = require('../model/seller.model');
 
 const authController = {
   registerBuyer: async (req, res) => {
     try {
       const { name, email, password } = req.body;
-      const emailCheck = await authModel.findBy("email", email);
+      const emailCheck = await authModel.findBy('email', email);
       if (!emailCheck.rowCount) {
         // to table auth
 
         const authId = uuidv4();
         const level = 1;
         const isActive = false;
-        const verifyToken = crypto.randomBytes(16).toString("hex");
+        const verifyToken = crypto.randomBytes(16).toString('hex');
         const passwordHashed = await bcrypt.hash(password, 10);
         const dataToAuth = {
           authId,
@@ -34,7 +34,7 @@ const authController = {
 
         const buyerId = uuidv4();
         const userId = authId;
-        const photo = "user_default.png";
+        const photo = 'user_default.png';
         const dataToBuyer = {
           buyerId,
           userId,
@@ -45,8 +45,8 @@ const authController = {
         sendMail.sendConfirmationEmail(email, verifyToken, name);
         success(res, {
           code: 200,
-          status: "success",
-          message: "Register as buyer success",
+          status: 'success',
+          message: 'Register as buyer success',
           data: {
             ...dataToAuth,
             ...dataToBuyer,
@@ -54,11 +54,11 @@ const authController = {
         });
       } else {
         const err = {
-          message: "email is already registered",
+          message: 'email is already registered',
         };
         failed(res, {
           code: 500,
-          status: "error",
+          status: 'error',
           message: err.message,
           error: [],
         });
@@ -67,7 +67,7 @@ const authController = {
     } catch (error) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: error.message,
         error: [],
       });
@@ -76,10 +76,10 @@ const authController = {
   loginBuyer: async (req, res) => {
     try {
       const { email, password } = req.body;
-      const emailCheck = await authModel.findBy("email", email);
+      const emailCheck = await authModel.findBy('email', email);
       if (emailCheck.rowCount) {
         if (emailCheck.rows[0].level == 1) {
-          if (emailCheck.rows[0].verify_code == "") {
+          if (emailCheck.rows[0].verify_code == '') {
             if (emailCheck.rows[0].is_active == 1) {
               bcrypt
                 .compare(password, emailCheck.rows[0].password)
@@ -91,25 +91,25 @@ const authController = {
                     });
                     success(res, {
                       code: 200,
-                      status: "success",
-                      message: "login buyer success",
+                      status: 'success',
+                      message: 'login buyer success',
                       token: token,
                     });
                   } else {
                     failed(res, {
                       code: 400,
-                      status: "error",
-                      message: "wrong email or password",
+                      status: 'error',
+                      message: 'wrong email or password',
                     });
                   }
                 });
             } else {
               const err = {
-                message: "your account is disabled, contact administrator",
+                message: 'your account is disabled, contact administrator',
               };
               failed(res, {
                 code: 500,
-                status: "error",
+                status: 'error',
                 message: err.message,
                 error: [],
               });
@@ -117,11 +117,11 @@ const authController = {
             }
           } else {
             const err = {
-              message: "account not verified by email",
+              message: 'account not verified by email',
             };
             failed(res, {
               code: 500,
-              status: "error",
+              status: 'error',
               message: err.message,
               error: [],
             });
@@ -129,11 +129,11 @@ const authController = {
           }
         } else {
           const err = {
-            message: "your account not buyer account",
+            message: 'your account not buyer account',
           };
           failed(res, {
             code: 500,
-            status: "error",
+            status: 'error',
             message: err.message,
             error: [],
           });
@@ -141,11 +141,11 @@ const authController = {
         }
       } else {
         const err = {
-          message: "email is not registered",
+          message: 'email is not registered',
         };
         failed(res, {
           code: 500,
-          status: "error",
+          status: 'error',
           message: err.message,
           error: [],
         });
@@ -154,7 +154,7 @@ const authController = {
     } catch (error) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: error.message,
         error: [],
       });
@@ -164,10 +164,10 @@ const authController = {
     try {
       const { name, email, phone, storeName, password } = req.body;
       // return console.log(req.body);
-      const emailCheck = await authModel.findBy("email", email);
+      const emailCheck = await authModel.findBy('email', email);
       if (emailCheck.rowCount == 0) {
         const storeNameCheck = await sellerModel.findBy(
-          "store_name",
+          'store_name',
           storeName
         );
         console.log(storeNameCheck);
@@ -177,7 +177,7 @@ const authController = {
           const authId = uuidv4();
           const level = 2;
           const isActive = false;
-          const verifyToken = crypto.randomBytes(16).toString("hex");
+          const verifyToken = crypto.randomBytes(16).toString('hex');
           const passwordHashed = await bcrypt.hash(password, 10);
           const dataToAuth = {
             authId,
@@ -193,7 +193,7 @@ const authController = {
 
           const sellerId = uuidv4();
           const userId = authId;
-          const photo = "user_default.png";
+          const photo = 'user_default.png';
           const dataToSeller = {
             sellerId,
             userId,
@@ -206,8 +206,8 @@ const authController = {
           sendMail.sendConfirmationEmail(email, verifyToken, name);
           success(res, {
             code: 200,
-            status: "success",
-            message: "Register as seller success",
+            status: 'success',
+            message: 'Register as seller success',
             data: {
               ...dataToAuth,
               ...dataToSeller,
@@ -215,11 +215,11 @@ const authController = {
           });
         } else {
           const err = {
-            message: "store name is already registered",
+            message: 'store name is already registered',
           };
           failed(res, {
             code: 500,
-            status: "error",
+            status: 'error',
             message: err.message,
             error: [],
           });
@@ -227,11 +227,11 @@ const authController = {
         }
       } else {
         const err = {
-          message: "email is already registered",
+          message: 'email is already registered',
         };
         failed(res, {
           code: 500,
-          status: "error",
+          status: 'error',
           message: err.message,
           error: [],
         });
@@ -240,7 +240,7 @@ const authController = {
     } catch (error) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: error.message,
         error: [],
       });
@@ -250,10 +250,10 @@ const authController = {
   loginSeller: async (req, res) => {
     try {
       const { email, password } = req.body;
-      const emailCheck = await authModel.findBy("email", email);
+      const emailCheck = await authModel.findBy('email', email);
       if (emailCheck.rowCount) {
         if (emailCheck.rows[0].level == 2) {
-          if (emailCheck.rows[0].verify_code == "") {
+          if (emailCheck.rows[0].verify_code == '') {
             if (emailCheck.rows[0].is_active == 1) {
               bcrypt
                 .compare(password, emailCheck.rows[0].password)
@@ -265,25 +265,25 @@ const authController = {
                     });
                     success(res, {
                       code: 200,
-                      status: "success",
-                      message: "login seller success",
+                      status: 'success',
+                      message: 'login seller success',
                       token: token,
                     });
                   } else {
                     failed(res, {
                       code: 400,
-                      status: "error",
-                      message: "wrong email or password",
+                      status: 'error',
+                      message: 'wrong email or password',
                     });
                   }
                 });
             } else {
               const err = {
-                message: "your account is disabled, contact administrator",
+                message: 'your account is disabled, contact administrator',
               };
               failed(res, {
                 code: 500,
-                status: "error",
+                status: 'error',
                 message: err.message,
                 error: [],
               });
@@ -291,11 +291,11 @@ const authController = {
             }
           } else {
             const err = {
-              message: "account not verified by email",
+              message: 'account not verified by email',
             };
             failed(res, {
               code: 500,
-              status: "error",
+              status: 'error',
               message: err.message,
               error: [],
             });
@@ -303,11 +303,11 @@ const authController = {
           }
         } else {
           const err = {
-            message: "your account not seller account",
+            message: 'your account not seller account',
           };
           failed(res, {
             code: 500,
-            status: "error",
+            status: 'error',
             message: err.message,
             error: [],
           });
@@ -315,11 +315,11 @@ const authController = {
         }
       } else {
         const err = {
-          message: "email is not registered",
+          message: 'email is not registered',
         };
         failed(res, {
           code: 500,
-          status: "error",
+          status: 'error',
           message: err.message,
           error: [],
         });
@@ -328,7 +328,7 @@ const authController = {
     } catch (error) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: error.message,
         error: [],
       });
@@ -337,12 +337,15 @@ const authController = {
   loginAdmin: async (req, res) => {
     try {
       const { email, password } = req.body;
-      const emailCheck = await authModel.findBy("email", email);
+      const emailCheck = await authModel.findBy('email', email);
       // console.log(emailCheck.rowCount);
       if (emailCheck.rowCount) {
         if (emailCheck.rows[0].level == 0) {
-          if (emailCheck.rows[0].verify_code == "") {
-            if (emailCheck.rows[0].is_active == 1) {
+          if (
+            emailCheck.rows[0].verify_code == '' ||
+            emailCheck.rows[0].verify_code == null
+          ) {
+            if (emailCheck.rows[0].is_active == true) {
               bcrypt
                 .compare(password, emailCheck.rows[0].password)
                 .then(async (match) => {
@@ -353,25 +356,25 @@ const authController = {
                     });
                     success(res, {
                       code: 200,
-                      status: "success",
-                      message: "login admin success",
+                      status: 'success',
+                      message: 'login admin success',
                       token: token,
                     });
                   } else {
                     failed(res, {
                       code: 400,
-                      status: "error",
-                      message: "wrong email or password",
+                      status: 'error',
+                      message: 'wrong email or password',
                     });
                   }
                 });
             } else {
               const err = {
-                message: "your account is disabled, contact administrator",
+                message: 'your account is disabled, contact administrator',
               };
               failed(res, {
                 code: 500,
-                status: "error",
+                status: 'error',
                 message: err.message,
                 error: [],
               });
@@ -379,11 +382,11 @@ const authController = {
             }
           } else {
             const err = {
-              message: "account not verified by email",
+              message: 'account not verified by email',
             };
             failed(res, {
               code: 500,
-              status: "error",
+              status: 'error',
               message: err.message,
               error: [],
             });
@@ -391,11 +394,11 @@ const authController = {
           }
         } else {
           const err = {
-            message: "your account not admin account",
+            message: 'your account not admin account',
           };
           failed(res, {
             code: 500,
-            status: "error",
+            status: 'error',
             message: err.message,
             error: [],
           });
@@ -403,11 +406,11 @@ const authController = {
         }
       } else {
         const err = {
-          message: "email is not registered",
+          message: 'email is not registered',
         };
         failed(res, {
           code: 500,
-          status: "error",
+          status: 'error',
           message: err.message,
           error: [],
         });
@@ -416,7 +419,7 @@ const authController = {
     } catch (error) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: error.message,
         error: [],
       });
@@ -425,7 +428,7 @@ const authController = {
   verifyEmail: async (req, res) => {
     try {
       const { token } = req.query;
-      const verifyTokenCheck = await authModel.findBy("verify_code", token);
+      const verifyTokenCheck = await authModel.findBy('verify_code', token);
       if (verifyTokenCheck.rowCount > 0) {
         await authModel
           .verifyingUser(token)
@@ -443,11 +446,11 @@ const authController = {
           });
       } else {
         const err = {
-          message: "verify code is invalid",
+          message: 'verify code is invalid',
         };
         failed(res, {
           code: 500,
-          status: "error",
+          status: 'error',
           message: err.message,
           error: [],
         });
@@ -455,7 +458,7 @@ const authController = {
     } catch (error) {
       failed(res, {
         code: 500,
-        status: "error",
+        status: 'error',
         message: error.message,
         error: [],
       });
@@ -465,35 +468,35 @@ const authController = {
     try {
       const { id } = req.params;
       const { isActive } = req.body;
-      const check = await authModel.findBy("id", id);
+      const check = await authModel.findBy('id', id);
       if (check.rowCount == 1) {
         if (isActive == true && check.rows[0].is_active == true) {
           failed(res, {
             code: 500,
-            status: "failed",
+            status: 'failed',
             message: `user with id ${id} already active`,
           });
         } else if (isActive == false && check.rows[0].is_active == false) {
           failed(res, {
             code: 500,
-            status: "failed",
+            status: 'failed',
             message: `user with id ${id} already nonactive`,
           });
         } else {
           const data = { id, isActive };
           await authModel.updateStatus(data);
-          const newData = await authModel.findBy("id", id);
+          const newData = await authModel.findBy('id', id);
           success(res, {
             code: 200,
-            status: "success",
-            message: "Success update status buyer",
+            status: 'success',
+            message: 'Success update status buyer',
             data: newData.rows[0],
           });
         }
       } else {
         failed(res, {
           code: 500,
-          status: "failed",
+          status: 'failed',
           message: `user with id ${id} not found`,
         });
       }

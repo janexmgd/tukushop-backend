@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 
 const router = express.Router();
 
@@ -9,39 +9,41 @@ const {
   detail,
   update,
   destroy,
-} = require("../controller/category.controller");
+} = require('../controller/category.controller');
 
 // insert middleware here
-const validationResult = require("../middleware/validation");
-const jwtAuth = require("../middleware/jwtAuth");
-const { isAdmin } = require("../middleware/authorization");
-// const validationResult = require("../middleware/validation");
+const validationResult = require('../middleware/validation');
+const jwtAuth = require('../middleware/jwtAuth');
+const { isAdmin } = require('../middleware/authorization');
+const upload = require('../middleware/upload');
 
 // validation
 const {
   addCategoryValidation,
   updateCategoryValidation,
-} = require("../validation/category.validation");
+} = require('../validation/category.validation');
 
 router
-  .get("/category", jwtAuth, all) // to get all
-  .get("/category/:id", jwtAuth, detail) // to get by id
+  .get('/category', jwtAuth, all) // to get all
+  .get('/category/:id', jwtAuth, detail) // to get by id
   .post(
-    "/category",
+    '/category',
     jwtAuth,
     isAdmin,
+    upload,
     addCategoryValidation,
     validationResult,
     insert
   ) // to add
   .put(
-    "/category/:id",
+    '/category/:id',
     jwtAuth,
     isAdmin,
+    upload,
     updateCategoryValidation,
     validationResult,
     update
   ) // to update
-  .delete("/category/:id", jwtAuth, isAdmin, destroy); // to delete
+  .delete('/category/:id', jwtAuth, isAdmin, destroy); // to delete
 
 module.exports = router;

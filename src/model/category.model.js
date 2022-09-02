@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require('../config/db');
 
 const categoryModel = {
   totalData: () => {
@@ -25,6 +25,19 @@ const categoryModel = {
       );
     });
   },
+  findBy: (table, keyword) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT * FROM category WHERE ${table}='${keyword}'`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
+        }
+      );
+    });
+  },
   detail: (id) => {
     return new Promise((resolve, reject) => {
       db.query(`SELECT * FROM category WHERE id='${id}'`, (err, result) => {
@@ -37,9 +50,9 @@ const categoryModel = {
   },
   insert: (data) => {
     return new Promise((resolve, reject) => {
-      const { id, name } = data;
+      const { id, name, photo } = data;
       db.query(
-        `INSERT INTO category (id,name) VALUES ('${id}','${name}')`,
+        `INSERT INTO category (id,name,photo) VALUES ('${id}','${name}','${photo}')`,
         (err, result) => {
           if (err) {
             reject(err);
