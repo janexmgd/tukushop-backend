@@ -149,7 +149,7 @@ const productController = {
     } catch (error) {
       failed(res, {
         code: 500,
-        status: 'error',
+        status: 'error di sini',
         message: error.mesaage,
         error: [],
       });
