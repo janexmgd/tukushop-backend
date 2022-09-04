@@ -288,6 +288,37 @@ const productController = {
       });
     }
   },
+  getProductbyCategoryName: async (req, res) => {
+    try {
+      const { name } = req.params;
+      // return console.log(name);
+      const categoryCek = await categoryModel.findBy('name', name);
+      if (categoryCek.rowCount > 0) {
+        const categoryId = categoryCek.rows[0].id;
+        const products = await productModel.findBy('category_id', categoryId);
+        success(res, {
+          code: 200,
+          status: 'success',
+          message: 'Success get product',
+          data: products.rows,
+        });
+      } else {
+        failed(res, {
+          code: 500,
+          status: 'error',
+          message: 'no category found',
+          error: [],
+        });
+      }
+    } catch (err) {
+      failed(res, {
+        code: 500,
+        status: 'error',
+        message: err.message,
+        error: [],
+      });
+    }
+  },
 };
 
 module.exports = productController;

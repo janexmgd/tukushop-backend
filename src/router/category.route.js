@@ -14,7 +14,7 @@ const {
 // insert middleware here
 const validationResult = require('../middleware/validation');
 const jwtAuth = require('../middleware/jwtAuth');
-const { isAdmin } = require('../middleware/authorization');
+// const { isAdmin } = require('../middleware/authorization');
 const upload = require('../middleware/upload');
 
 // validation
@@ -24,12 +24,11 @@ const {
 } = require('../validation/category.validation');
 
 router
-  .get('/category', jwtAuth, all) // to get all
+  .get('/category', all) // to get all
   .get('/category/:id', jwtAuth, detail) // to get by id
   .post(
     '/category',
     jwtAuth,
-    isAdmin,
     upload,
     addCategoryValidation,
     validationResult,
@@ -38,12 +37,11 @@ router
   .put(
     '/category/:id',
     jwtAuth,
-    isAdmin,
     upload,
     updateCategoryValidation,
     validationResult,
     update
   ) // to update
-  .delete('/category/:id', jwtAuth, isAdmin, destroy); // to delete
+  .delete('/category/:id', jwtAuth, destroy); // to delete
 
 module.exports = router;

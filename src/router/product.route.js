@@ -10,6 +10,7 @@ const {
   update,
   destroy,
   productCategory,
+  getProductbyCategoryName,
 } = require('../controller/product.controller');
 
 // middleware
@@ -25,7 +26,7 @@ const {
 } = require('../validation/product.validation');
 
 router
-  .get('/product', jwtAuth, all) // to get all
+  .get('/product', all) // to get all
   .get('/product/:id', jwtAuth, detail) // to get detail id
   .post(
     '/product',
@@ -46,5 +47,6 @@ router
     update
   ) // to update product
   .delete('/product/:id', jwtAuth, isSeller, destroy) // to delete product
-  .get('/product-category', jwtAuth, productCategory); // to get product join category
+  .get('/product-category', jwtAuth, productCategory) // to get product join category
+  .get('/product/category/:name', jwtAuth, getProductbyCategoryName);
 module.exports = router;

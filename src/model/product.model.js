@@ -14,8 +14,10 @@ const productModel = {
   all: (searchQuery, offsetValue, limitValue, sortQuery, modeQuery) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM products WHERE LOWER(name) LIKE '%${searchQuery}%'
-      ORDER BY ${sortQuery} ${modeQuery} LIMIT ${limitValue} OFFSET ${offsetValue}
+        `SELECT *,seller.store_name FROM products 
+        INNER JOIN seller ON products.seller_id=seller.id
+        WHERE LOWER(products.name) LIKE '%${searchQuery}%' 
+        ORDER BY products.${sortQuery} ${modeQuery} LIMIT ${limitValue} OFFSET ${offsetValue}
       `,
         (err, result) => {
           if (err) {
@@ -113,6 +115,19 @@ const productModel = {
           } else {
             resolve(result);
           }
+        }
+      );
+    });
+  },
+  findBy: (table, keyword) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT * FROM product WHERE ${table}='${keyword}'`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
         }
       );
     });
