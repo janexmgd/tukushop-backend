@@ -56,7 +56,8 @@ const productModel = {
         ('${id}','${sellerId}','${name}',${stock},${price},'${categoryId}','${isNew}','${description}','${photo}')`,
         (err, res) => {
           if (err) {
-            reject(err);
+            // reject(err);
+            console.log(err);
           }
           resolve(res);
         }

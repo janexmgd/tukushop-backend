@@ -127,6 +127,7 @@ const productController = {
             message: error.message,
             error: [],
           });
+          console.log(data);
         } else {
           await productModel.insert(data);
           success(res, {
@@ -149,7 +150,7 @@ const productController = {
       failed(res, {
         code: 500,
         status: 'error',
-        message: error.message,
+        message: error,
         error: [],
       });
       return;
