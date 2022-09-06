@@ -17,7 +17,7 @@ const productModel = {
         `SELECT products.id AS productsId,products.seller_id AS productsSellerId,products.name AS productsName,
         products.stock AS productsStock, products.price AS productsPrice,products.is_new AS productsIsNew, 
         products.description AS productsDescription,products.photo AS productsPhoto,products.category_id AS proudctsCategoryId,
-        store.name AS storeName
+        seller.store_name AS storeName
         FROM products 
         INNER JOIN seller ON products.seller_id=seller.id
         WHERE LOWER(products.name) LIKE '%${searchQuery}%' 
