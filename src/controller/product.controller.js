@@ -129,6 +129,17 @@ const productController = {
           });
           console.log(data);
         } else {
+          const data = {
+            id,
+            name,
+            stock,
+            price,
+            isNew,
+            description,
+            photo,
+            categoryId,
+            sellerId,
+          };
           await productModel.insert(data);
           success(res, {
             code: 200,
