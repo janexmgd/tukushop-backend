@@ -165,6 +165,9 @@ const productController = {
         error: [],
       });
       return;
+      // res.json({
+      //   data
+      // })
     }
   },
   update: async (req, res) => {
