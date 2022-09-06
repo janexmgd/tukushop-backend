@@ -14,7 +14,7 @@ const productModel = {
   all: (searchQuery, offsetValue, limitValue, sortQuery, modeQuery) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT products.id AS productsId,products.sellerr_id AS productsSellerId,products.name AS productsName,
+        `SELECT products.id AS productsId,products.seller_id AS productsSellerId,products.name AS productsName,
         products.stock AS productsStock, products.price AS productsPrice,products.is_new AS productsIsNew, 
         products.description AS productsDescription,products.photo AS productsPhoto,products.category_id AS proudctsCategoryId,
         store.name AS storeName
