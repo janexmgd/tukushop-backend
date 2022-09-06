@@ -150,7 +150,7 @@ const productController = {
       failed(res, {
         code: 500,
         status: 'error di sini',
-        message: error.mesaage,
+        message: error.message,
         error: [],
       });
       return;
